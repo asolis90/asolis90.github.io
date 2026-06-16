@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Angel Solis — Senior Mobile Engineer specializing in Android, Kotlin Multiplatform, and Jetpack Compose.">
+  <title>Angel Solis | Senior Mobile Engineer</title>
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --text-primary: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent-blue: #3b82f6;
+      --accent-violet: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --gradient-accent: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+      --gradient-text: linear-gradient(135deg, #60a5fa, #a78bfa, #22d3ee);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Background gradient blobs */
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-blobs::before,
+    .bg-blobs::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.35;
+    }
+
+    .bg-blobs::before {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+      top: -200px;
+      right: -100px;
+    }
+
+    .bg-blobs::after {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-violet) 0%, transparent 70%);
+      bottom: -150px;
+      left: -100px;
+    }
+
+  .blob-cyan {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+      filter: blur(100px);
+      opacity: 0.2;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-cta {
+      padding: 8px 16px;
+      background: var(--gradient-accent);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 160px 0 100px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .hero-badge span {
+      width: 6px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--accent-cyan);
+      font-weight: 500;
+      margin-bottom: 24px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-intro {
+      max-width: 640px;
+      margin: 0 auto 40px;
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+  /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: white;
+      box-shadow: 0 4px 24px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.45);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Sections */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-blue);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      max-width: 560px;
+      margin: 0 auto;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    /* About */
+    .about-content {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-content p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+
+    .about-tag {
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .about-tag:hover {
+      border-color: var(--accent-blue);
+      color: var(--text-primary);
+    }
+
+    /* Cards grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      color: var(--accent-blue);
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      font-size: 0.925rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* Featured work */
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-accent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-md);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .project-tag {
+      padding: 4px 10px;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--accent-blue);
+      font-weight: 500;
+    }
+
+    /* Portfolio preview */
+    .portfolio-section {
+      padding-bottom: 120px;
+    }
+
+    .pdf-showcase {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pdf-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .pdf-header-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .pdf-header-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .pdf-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .pdf-actions .btn {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+
+    .pdf-viewer {
+      position: relative;
+      background: #1a1a24;
+    }
+
+    .pdf-viewer iframe,
+    .pdf-viewer object {
+      display: block;
+      width: 100%;
+      height: 720px;
+      border: none;
+    }
+
+    .pdf-fallback {
+      padding: 48px 28px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .pdf-fallback a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .pdf-fallback a:hover {
+      text-decoration: underline;
+    }
+
+    /* Floating download button */
+    .float-download {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      background: var(--gradient-accent);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+    }
+
+    .float-download.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .float-download:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(59, 130, 246, 0.5);
+    }
+
+    .float-download svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg {
+      width: 22px;
+      height: 22px;
+      color: var(--accent-blue);
+    }
+
+    .contact-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 12px 0;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero {
+        padding: 130px 0 80px;
+      }
+
+      section {
+        padding: 72px 0;
+      }
+
+      .pdf-viewer iframe,
+      .pdf-viewer object {
+        height: 480px;
+      }
+
+      .float-download {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 18px;
+        font-size: 0.85rem;
+      }
+
+      .pdf-header {
+        padding: 16px 20px;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-cta .btn {
+        justify-content: center;
+      }
+
+      .pdf-viewer iframe,
+      .pdf-viewer object {
+        height: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blobs">
+    <div class="blob-cyan"></div>
+  </div>
+
+  <!-- CONFIG: Update portfolio PDF filename in href attributes below (search for portfolio.pdf) -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo">Angel Solis</a>
+      <button class="nav-toggle" aria-label="Toggle menu" id="navToggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18"/>
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#focus">Focus</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#portfolio" class="nav-cta">View Portfolio</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span></span>
+          Available for opportunities
+        </div>
+        <h1>Angel Solis</h1>
+        <p class="hero-title">Senior Mobile Engineer</p>
+        <p class="hero-subtitle">Android • Kotlin Multiplatform • Jetpack Compose • Product Engineering</p>
+        <p class="hero-intro">
+          I build scalable, user-focused mobile applications with deep experience in Android, Kotlin Multiplatform, modern app architecture, and consumer product experiences.
+        </p>
+        <div class="hero-cta">
+          <a href="#portfolio" class="btn btn-primary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            View Portfolio
+          </a>
+          <a href="portfolio.pdf" download class="btn btn-secondary" id="heroDownload">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download PDF
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">About</span>
+          <h2 class="section-title">Building mobile products that scale</h2>
+        </div>
+        <div class="about-content">
+          <p>
+            With over 10 years of mobile engineering experience, I specialize in crafting high-quality Android applications and cross-platform solutions that delight users and stand the test of time.
+          </p>
+          <p>
+            My expertise spans Android, Kotlin, Jetpack Compose, Kotlin Multiplatform, Firebase, modern architecture patterns, and product-focused engineering. I have extensive experience shipping consumer-facing apps and building scalable mobile platforms that teams can iterate on confidently.
+          </p>
+          <div class="about-tags">
+            <span class="about-tag">Android</span>
+            <span class="about-tag">Kotlin</span>
+            <span class="about-tag">Jetpack Compose</span>
+            <span class="about-tag">KMP</span>
+            <span class="about-tag">Firebase</span>
+            <span class="about-tag">Architecture</span>
+            <span class="about-tag">Product Engineering</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="focus">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Expertise</span>
+          <h2 class="section-title">Technical Focus</h2>
+          <p class="section-desc">Core areas where I bring depth, craft, and measurable impact to mobile product teams.</p>
+        </div>
+        <div class="cards-grid">
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
+                <line x1="12" y1="18" x2="12" y2="18"/>
+              </svg>
+            </div>
+            <h3>Android Engineering</h3>
+            <p>Deep Android framework knowledge, from UI layers to system integrations, building robust apps that leverage the full platform.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h3>Kotlin Multiplatform</h3>
+            <p>Shared business logic across platforms with KMP, reducing duplication while maintaining native-quality experiences on each device.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M3 9h18M9 21V9"/>
+              </svg>
+            </div>
+            <h3>Jetpack Compose</h3>
+            <p>Modern declarative UI with Compose, crafting fluid interfaces with thoughtful state management and reusable component systems.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h3>Mobile Architecture</h3>
+            <p>Clean, scalable architectures — MVVM, MVI, modularization — designed for team velocity and long-term maintainability.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <h3>Product & UX</h3>
+            <p>Product-minded engineering that balances user needs, business goals, and technical constraints to ship features users love.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <h3>Performance & Reliability</h3>
+            <p>Profiling, optimization, crash-free sessions, and observability — ensuring apps feel fast and stay stable at scale.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Projects</span>
+          <h2 class="section-title">Featured Work</h2>
+          <p class="section-desc">Selected projects showcasing platform depth, architecture, and product craftsmanship.</p>
+        </div>
+        <div class="cards-grid">
+          <article class="project-card">
+            <h3 class="project-name">Daily Games</h3>
+            <p class="project-desc">KMP-based mini-games platform with reusable modules for streaks, rewards, achievements, profiles, and monetization — a modular architecture designed for rapid game iteration.</p>
+            <div class="project-tags">
+              <span class="project-tag">KMP</span>
+              <span class="project-tag">Modular</span>
+              <span class="project-tag">Monetization</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <h3 class="project-name">Zodiac Launcher</h3>
+            <p class="project-desc">Android launcher experience requiring deep Android framework integration — home screen customization, app management, and system-level UI that feels native and responsive.</p>
+            <div class="project-tags">
+              <span class="project-tag">Android Framework</span>
+              <span class="project-tag">System UI</span>
+              <span class="project-tag">Launcher</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <h3 class="project-name">Weather Now</h3>
+            <p class="project-desc">Consumer weather app focused on performance, reliability, and user experience — delivering accurate forecasts with a polished, intuitive interface users rely on daily.</p>
+            <div class="project-tags">
+              <span class="project-tag">Consumer App</span>
+              <span class="project-tag">Performance</span>
+              <span class="project-tag">UX</span>
+            </div>
+          </article>
+          <article class="project-card">
+            <h3 class="project-name">Flomura</h3>
+            <p class="project-desc">AI-native marketplace and infrastructure layer for floral commerce — connecting buyers, sellers, and intelligent tooling in a modern commerce platform.</p>
+            <div class="project-tags">
+              <span class="project-tag">AI</span>
+              <span class="project-tag">Marketplace</span>
+              <span class="project-tag">Commerce</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="portfolio-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Portfolio</span>
+          <h2 class="section-title">Portfolio Preview</h2>
+          <p class="section-desc">Browse my full portfolio below or download it for offline review.</p>
+        </div>
+        <div class="pdf-showcase">
+          <div class="pdf-header">
+            <div class="pdf-header-info">
+              <h3>Angel Solis — Portfolio</h3>
+              <p>Senior Mobile Engineer · Android · KMP · Jetpack Compose</p>
+            </div>
+            <div class="pdf-actions">
+              <a href="portfolio.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Open in New Tab
+              </a>
+              <a href="portfolio.pdf" download class="btn btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download PDF
+              </a>
+            </div>
+          </div>
+          <div class="pdf-viewer">
+            <!-- CONFIG: Update src to match your portfolio PDF filename -->
+            <iframe
+              src="portfolio.pdf"
+              title="Angel Solis Portfolio PDF"
+              type="application/pdf"
+            ></iframe>
+            <div class="pdf-fallback">
+              <p>Unable to display the PDF inline? <a href="portfolio.pdf" target="_blank" rel="noopener noreferrer">Open portfolio.pdf</a> in a new tab or <a href="portfolio.pdf" download>download it directly</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Contact</span>
+          <h2 class="section-title">Let's Connect</h2>
+          <p class="section-desc">Interested in working together? Reach out — I'd love to hear about your team and projects.</p>
+        </div>
+        <div class="contact-grid">
+          <!-- CONFIG: Update email below -->
+          <a href="mailto:your-email@example.com" class="contact-card">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">your-email@example.com</div>
+            </div>
+          </a>
+          <!-- CONFIG: Update LinkedIn URL below -->
+          <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">LinkedIn</div>
+              <div class="contact-value">linkedin.com/in/your-profile</div>
+            </div>
+          </a>
+          <!-- CONFIG: Update GitHub URL below -->
+          <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.73 1S18.73 0 17 0c-1.67 0-3.27.67-4.5 1.53A11.5 11.5 0 0 0 5.27 1C3.5 1 2.5 2 2.5 4.77a5.44 5.44 0 0 0 1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">GitHub</div>
+              <div class="contact-value">github.com/your-username</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Angel Solis. Senior Mobile Engineer.</p>
+    </div>
+  </footer>
+
+  <!-- CONFIG: Update href to match your portfolio PDF filename -->
+  <a href="portfolio.pdf" download class="float-download" id="floatDownload" aria-label="Download portfolio PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  </a>
+
+  <script>
+    (function () {
+      var navToggle = document.getElementById('navToggle');
+      var navLinks = document.getElementById('navLinks');
+      var floatDownload = document.getElementById('floatDownload');
+      var portfolioSection = document.getElementById('portfolio');
+
+      if (navToggle && navLinks) {
+        navToggle.addEventListener('click', function () {
+          navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+
+      if (floatDownload && portfolioSection) {
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                floatDownload.classList.add('visible');
+              } else {
+                floatDownload.classList.remove('visible');
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        observer.observe(portfolioSection);
+      }
+    })();
+  </script>
+</body>
+</html>
